@@ -90,6 +90,8 @@ public class InicioActivity extends Activity
 					public void onClick(DialogInterface dialog, int which) 
 					{
 						finish();
+						
+						
 					}
 				});
 				AlertDialog alerta = alertBuilder.create();
