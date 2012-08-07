@@ -1,15 +1,14 @@
 package com.mini_colombia.descargas;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -102,6 +101,15 @@ public class DescargasRingtones extends Activity
 	private class DescargarJsonRingtones extends AsyncTask<String, Void, Void>
 	{
 
+		ProgressDialog progress;
+		
+		@Override
+		protected void onPreExecute() 
+		{
+			super.onPreExecute();
+			progress = ProgressDialog.show(darContextoTabs(),"","Cargando...",false);
+		}
+		
 		@Override
 		protected Void doInBackground(String... params) 
 		{
@@ -135,6 +143,8 @@ public class DescargasRingtones extends Activity
 		@Override
 		protected void onPostExecute(Void result) 
 		{
+			if(progress.isShowing())
+				progress.dismiss();
 			crearRingtones();
 		}
 
