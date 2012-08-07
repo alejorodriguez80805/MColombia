@@ -20,48 +20,15 @@ public class DescargarAudioOnline extends IntentService
 {
 	public static final int ACABO = 1;
 	
+	private static final String SEPARADOR = "/";
+	
+	private static final String MINI = "Mini";
+	
+	private static final String EXTENSION = "mp3";
+	
 	public DescargarAudioOnline()
 	{
 		super("");
-	}
-	
-	public static void descargarAudio(String sUrl)
-	{
-		URL url;
-		String path = Environment.getExternalStorageDirectory().toString();
-		try 
-		{
-			url = new URL(sUrl);
-			HttpURLConnection conn= (HttpURLConnection)url.openConnection();
-			conn.setDoInput(true);
-			conn.connect();
-			InputStream is = conn.getInputStream();
-			OutputStream os = new FileOutputStream(path + "/ringtoneMini.mp3");
-			
-			byte data[] = new byte[1024];
-            int count;
-            
-            while((count = is.read(data)) != -1)
-            {
-            	os.write(data, 0, count);
-            }
-            
-            os.flush();
-            os.close();
-            is.close();
-		} 
-		catch (MalformedURLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		catch (IOException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-
 	}
 
 	@Override
@@ -70,7 +37,9 @@ public class DescargarAudioOnline extends IntentService
 		String sUrl = intent.getStringExtra("url");
 		boolean ringtone = intent.getBooleanExtra("ringtone", false);
 		ResultReceiver receiver = (ResultReceiver) intent.getParcelableExtra("receiver");
+		String nombre = intent.getStringExtra("nombre");
 		String path = Environment.getExternalStorageDirectory().toString();
+		String rutaCompleta = path + SEPARADOR + MINI+ SEPARADOR + nombre + EXTENSION;
 		
 		try 
 		{
@@ -79,8 +48,7 @@ public class DescargarAudioOnline extends IntentService
 			conn.setDoInput(true);
 			conn.connect();
 			InputStream is = conn.getInputStream();
-			String s = path + getString(R.string.TAG_NOMBRE_ARCHIVO_RINGTONE);
-			OutputStream os = new FileOutputStream(path + getString(R.string.TAG_NOMBRE_ARCHIVO_RINGTONE));
+			OutputStream os = new FileOutputStream(rutaCompleta);
 			
 			byte data[] = new byte[1024];
             int count;
@@ -107,7 +75,8 @@ public class DescargarAudioOnline extends IntentService
 		
 		Bundle adjuntos = new Bundle();
 		adjuntos.putBoolean("ringtone", ringtone);
-		adjuntos.putString("nombre", path + getString(R.string.TAG_NOMBRE_ARCHIVO_RINGTONE));
+		adjuntos.putString("ruta", rutaCompleta);
+		adjuntos.putString("nombre", nombre);
 		receiver.send(ACABO, adjuntos);
 		
 	}

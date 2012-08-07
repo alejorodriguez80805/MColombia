@@ -21,11 +21,11 @@ import com.mini_colombia.parser.Parser;
 
 public class DescargasRingtones extends Activity 
 {
-	ArrayList<String> canciones = new ArrayList<String>();
 
+	//Arreglo utilizado almacenar cada ringtone y manejar los eventos de los botones
 	private ArrayList<Ringtone> arregloRingtones;
 
-
+	//Arreglo utilizado para almacenar la url y el nombre de cada ringtone
 	private ArrayList<String> arreglo;
 
 
@@ -59,6 +59,10 @@ public class DescargasRingtones extends Activity
 		return context;
 	}
 
+	//////////////////////////////////////////////////////////////////	
+	//  Metodos que maneja los eventos de los botones de cada ringtone
+	//////////////////////////////////////////////////////////////////
+
 	public void clickPlay(int id)
 	{
 		for(int i = 0; i<arregloRingtones.size(); i ++)
@@ -76,11 +80,25 @@ public class DescargasRingtones extends Activity
 		}
 	}
 
+
+
+	/**
+	 * Metodo utilizado por la clase ringtone para obtener la direccion de la tarjeta SD
+	 * @return
+	 */
 	public static String darDireccionSDcard()
 	{
 		return Environment.getExternalStorageDirectory().toString();
 	}
 
+
+
+	/**
+	 * 	Metodo asincronico que se encarga de descargar y almacenar en el arreglo 
+	 * 	arreglo tanto el nombre como la url de cada ringtone
+	 * @author Usuario
+	 *
+	 */
 	private class DescargarJsonRingtones extends AsyncTask<String, Void, Void>
 	{
 
@@ -103,12 +121,6 @@ public class DescargasRingtones extends Activity
 					String nombre = ringtone.getString(getString(R.string.TAG_NOMBRE_RINGTONES));
 					String urlRingtone = ringtone.getString(getString(R.string.TAG_URL_RINGTONES));
 
-					//					LinearLayout l = darLayoutPrincipal();
-					//					DescargasRingtones d = darContexto();
-					//					Drawable p = darProgress();
-					//					Drawable t = darThumb();
-					//					Context c = darContextoTabs();
-
 					arreglo.add(nombre + ";" + urlRingtone);
 				}
 			} 
@@ -128,40 +140,35 @@ public class DescargasRingtones extends Activity
 
 	}
 
-	//	private LinearLayout darLayoutPrincipal()
-	//	{
-	//		return (LinearLayout)findViewById(R.id.linearLayoutRingtones);
-	//	}
-	//
-	//	private Drawable darThumb()
-	//	{
-	//		return getResources().getDrawable(R.drawable.seek_thumb);
-	//	}
-	//
-	//	private Drawable darProgress()
-	//	{
-	//		return getResources().getDrawable(R.drawable.seekbar_progress_bg);
-	//	}
-	//
+
+	/**
+	 * Metodo utilizado para m=enviar a la clas Ringtone el contexto de esta clase.
+	 * @return
+	 */
 	private DescargasRingtones darContexto()
 	{
 		return this;
 	}
-	//
-	//	private Ringtone crearRingtone(LinearLayout l, DescargasRingtones d, Drawable p, Drawable t, Context c, String nombre, String urlRingtone, int id)
-	//	{
-	//		return new Ringtone(l, urlRingtone, d, id, t, p, c, nombre);
-	//	}
 
+
+	/**
+	 * Metodo que anade ringtones al arreglo arregloringtones
+	 */
 	private void crearRingtones()
 	{
 		for(int i=0;i<arreglo.size();i++)
 		{
+			boolean ultimo;
+
+			if(i != arreglo.size()-1)
+				ultimo = false;
+			else
+				ultimo = true;
 			String [] parametrosJson = arreglo.get(i).split(";");
 			String nombre = parametrosJson[0];
 			String url = parametrosJson[1];
 
-			Ringtone r = new Ringtone((LinearLayout)findViewById(R.id.linearLayoutRingtones), url, darContexto(), i, getResources().getDrawable(R.drawable.seek_thumb), getResources().getDrawable(R.drawable.seekbar_progress_bg), darContextoTabs(), nombre);
+			Ringtone r = new Ringtone((LinearLayout)findViewById(R.id.linearLayoutRingtones), url, darContexto(), i, getResources().getDrawable(R.drawable.seek_thumb), getResources().getDrawable(R.drawable.seekbar_progress_bg), darContextoTabs(), nombre, ultimo);
 			arregloRingtones.add(r);
 		}
 	}

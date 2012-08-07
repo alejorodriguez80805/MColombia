@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -37,11 +39,21 @@ import com.mini_colombia.servicios.DescargarAudioOnline;
 
 public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 {
+	private static final String NOMBRE_CARPETA = "Mini";
+
+	private static final String SEPARADOR = "/";
+
+	private static final String EXTENSION ="mp3";
+
 	private ImageButton botonPlay;
 
 	private ImageButton botonPause;
 
-	private SeekBar seekBar=null;;
+	private ImageButton botonPonerRingtone;
+
+	private ImageButton botonDescargar;
+
+	private SeekBar seekBar=null;
 
 	private MediaPlayer player;
 
@@ -52,15 +64,18 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 	private ProgressDialog progress;
 
 	private Context padreTabs;
-	
+
 	private String nombreRingtone;
 
-	public Ringtone(LinearLayout layoutPrincipal, final String url, final DescargasRingtones contexto, final int id, Drawable thumb,Drawable progressDrawable,final Context padreTabs, final String nombreRingtone)
+	private boolean ultimo;
+
+	public Ringtone(LinearLayout layoutPrincipal, final String url, final DescargasRingtones contexto, final int id, Drawable thumb,Drawable progressDrawable,final Context padreTabs, final String nombreRingtone, boolean ultimo)
 	{
 		this.contexto = contexto;
 		this.id = id;
 		this.padreTabs = padreTabs;
 		this.nombreRingtone = nombreRingtone;
+		this.ultimo = ultimo;
 
 
 
@@ -70,7 +85,10 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 
 
 		layoutModulo = new LinearLayout(contexto);
-		layoutModulo.setBackgroundResource(R.drawable.fondo_ringtones);
+		if(ultimo)
+			layoutModulo.setBackgroundResource(R.drawable.fondo_ringtone_ultimo);
+		else
+			layoutModulo.setBackgroundResource(R.drawable.fondo_ringtones);
 		layoutModulo.setOrientation(LinearLayout.VERTICAL);
 
 		layoutMargenes = new LinearLayout(contexto);
@@ -107,6 +125,7 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 			{
 
 				contexto.clickPlay(id);
+				deshabilitarDescargasYRingtone();
 				player = new MediaPlayer();
 				player.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				try 
@@ -131,7 +150,7 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 					e.printStackTrace();
 				}
 				player.prepareAsync();
-				progress = ProgressDialog.show(padreTabs,"","Cargando Ringtone",false);
+				progress = ProgressDialog.show(padreTabs,"","Cargando ringtone",false);
 			}
 		});
 		relSuperior.addView(botonPlay,paramsBPlay);			
@@ -148,6 +167,7 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 			public void onClick(View v) 
 			{
 				contexto.clickStop(id);
+				habilitarDescargasYRingtone();
 				player.pause();
 			}
 		});
@@ -170,7 +190,7 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 		RelativeLayout.LayoutParams r = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		relInferior.setLayoutParams(r);
 
-		ImageButton botonPonerRingtone = new ImageButton(contexto);
+		botonPonerRingtone = new ImageButton(contexto);
 		botonPonerRingtone.setBackgroundResource(R.drawable.poner_ringtone);
 		botonPonerRingtone.setOnClickListener(new OnClickListener() {
 
@@ -178,19 +198,19 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 			public void onClick(View arg0) 
 			{
 				String path = darDireccionSDcard();
-				File directorio = new File(path + "/Mini");
+				File directorio = new File(path + SEPARADOR + NOMBRE_CARPETA);
 				if(!directorio.exists())
 					directorio.mkdir();
-				
 
-				File file  = new File(path + contexto.getString(R.string.TAG_NOMBRE_ARCHIVO_RINGTONE));
+
+				File file  = new File(path + SEPARADOR + NOMBRE_CARPETA + SEPARADOR+ nombreRingtone + EXTENSION);
 				if(file.exists())
 				{
 					ContentValues values = new ContentValues();
 					values.put(MediaStore.MediaColumns.DATA, file.getAbsolutePath());
 					values.put(MediaStore.Audio.Media.IS_RINGTONE, true);
 					values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp3");
-					values.put(MediaStore.MediaColumns.TITLE, "hola");
+					values.put(MediaStore.MediaColumns.TITLE, nombreRingtone);
 
 					Uri uri = MediaStore.Audio.Media.getContentUriForPath(file.getAbsolutePath());
 					Uri newUri = contexto.getContentResolver().insert(uri, values);
@@ -204,6 +224,7 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 					intent.putExtra("url", url);
 					intent.putExtra("ringtone", true);
 					intent.putExtra("receiver", new DescargaAudioReceiver(new Handler()));
+					intent.putExtra("nombre", nombreRingtone);
 					contexto.startService(intent);
 
 
@@ -214,31 +235,59 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 		});
 		RelativeLayout.LayoutParams paramsBPRingtone = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
 		paramsBPRingtone.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		paramsBPRingtone.setMargins(0, 20, 0, 0);
+		paramsBPRingtone.setMargins(0, 30, 0, 0);
 		relInferior.addView(botonPonerRingtone, paramsBPRingtone);
 
-		ImageButton botonDescargar = new ImageButton(contexto);
+		botonDescargar = new ImageButton(contexto);
 		botonDescargar.setBackgroundResource(R.drawable.descargar_ringtone);
 		botonDescargar.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) 
 			{
+
+
 				String path = darDireccionSDcard();
-				File directorio = new File(path + "/Mini");
+				File directorio = new File(path + SEPARADOR+ NOMBRE_CARPETA);
 				if(!directorio.exists())
 					directorio.mkdir();
-				progress = ProgressDialog.show(padreTabs,"","Descargando ringtone",false);
-				Intent intent = new Intent(contexto, DescargarAudioOnline.class);
-				intent.putExtra("url", url);
-				intent.putExtra("receiver", new DescargaAudioReceiver(new Handler()));
-				contexto.startService(intent);
-				//				new DescargarRingtone().execute(url);
+
+				File file  = new File(path + SEPARADOR + NOMBRE_CARPETA + SEPARADOR + nombreRingtone + EXTENSION);
+
+				if(!file.exists())
+				{
+					progress = ProgressDialog.show(padreTabs,"","Descargando ringtone",false);
+					Intent intent = new Intent(contexto, DescargarAudioOnline.class);
+					intent.putExtra("url", url);
+					intent.putExtra("receiver", new DescargaAudioReceiver(new Handler()));
+					intent.putExtra("nombre", nombreRingtone);
+					intent.putExtra("ringtone", false);
+					contexto.startService(intent);
+				}
+				else
+				{
+					AlertDialog.Builder alertBuilder = new AlertDialog.Builder(padreTabs);
+					alertBuilder.setMessage("Ya has descargado este ringtone.");
+					alertBuilder.setCancelable(false);
+					alertBuilder.setNeutralButton("Aceptar", new DialogInterface.OnClickListener() 
+					{
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+
+						}
+					});
+					AlertDialog alerta = alertBuilder.create();
+					alerta.show();
+				}
+
+
 			}
 		});
 		RelativeLayout.LayoutParams paramsBDescargar = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
 		paramsBDescargar.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		paramsBDescargar.setMargins(0, 20, 0, 0);
+		paramsBDescargar.setMargins(0, 30, 0, 0);
 		relInferior.addView(botonDescargar, paramsBDescargar);
 
 		layoutMargenes.addView(relInferior);
@@ -247,6 +296,11 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 		layoutPrincipal.addView(layoutModulo);
 	}
 
+	/**
+	 * Clase que se encarga de la implementacion des seekbar.
+	 * @author Usuario
+	 *
+	 */
 	private class Player extends AsyncTask<Integer, Integer, Void>
 	{
 		SeekBar seekBar;
@@ -295,17 +349,11 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 
 	}
 
-	public SeekBar darSeekBarActual()
-	{
-		return this.seekBar;
-	}
 
-	public MediaPlayer darPlayerActual()
-	{
-		return this.player;
-	}
 
-	@Override
+	/**
+	 * Metodo que se lanza despues de que el metodo prepareAsync() haya concluido.
+	 */
 	public void onPrepared(MediaPlayer mp) 
 	{
 		progress.dismiss();
@@ -321,35 +369,73 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 	}
 
 
+	//////////////////////////////////////////////////////////////////	
+	//  getters 
+	//////////////////////////////////////////////////////////////////
 
 	public Context darContexto()
 	{
 		return this;
 	}
-
-	public void deshabilitarBotones()
+	
+	public SeekBar darSeekBarActual()
 	{
-		botonPlay.setClickable(false);
-		botonPause.setClickable(false);
+		return this.seekBar;
 	}
 
-	public void habilitarBotones()
+	public MediaPlayer darPlayerActual()
 	{
-		botonPlay.setClickable(true);
-		botonPause.setClickable(true);
+		return this.player;
 	}
 
 	public DescargasRingtones darClasePadre()
 	{
 		return (DescargasRingtones) contexto;
 	}
-
-	public Window darWindow()
+	
+	public String darDireccionSDcard()
 	{
-		return getWindow();
+		return  DescargasRingtones.darDireccionSDcard();
+	}
+	
+	//////////////////////////////////////////////////////////////////	
+	//  Metodos para bloquear y desbloquear los botones
+	//////////////////////////////////////////////////////////////////
+	
+	public void deshabilitarBotones()
+	{
+		botonPlay.setClickable(false);
+		botonPause.setClickable(false);
+		botonPonerRingtone.setClickable(false);
+		botonDescargar.setClickable(false);
 	}
 
+	public void habilitarBotones()
+	{
+		botonPlay.setClickable(true);
+		botonPause.setClickable(true);
+		botonPonerRingtone.setClickable(true);
+		botonDescargar.setClickable(true);
+	}
 
+	public void deshabilitarDescargasYRingtone()
+	{
+		botonPonerRingtone.setClickable(false);
+		botonDescargar.setClickable(false);
+	}
+
+	public void habilitarDescargasYRingtone()
+	{
+		botonPonerRingtone.setClickable(true);
+		botonDescargar.setClickable(true);
+	}
+
+	/**
+	 * Clase receiver encargada de recibir los resultados del servicio lanzado cuando
+	 * se descarga el ringtone.
+	 * @author Usuario
+	 *
+	 */
 	private class DescargaAudioReceiver extends ResultReceiver
 	{
 
@@ -367,17 +453,20 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 			{
 				progress.dismiss();
 
+				//Condicional que determina si se quiere establecer el archivo como ringtone
+				//o si solo se queria escuchar
 				if(resultData.getBoolean("ringtone"))
 				{
-					
-					String path = resultData.getString("nombre");
+
+					String rutaCompleta = resultData.getString("ruta");
+					String nombre = resultData.getString("nombre");
 					ContentValues values = new ContentValues();
-					values.put(MediaStore.MediaColumns.DATA, path);
+					values.put(MediaStore.MediaColumns.DATA, rutaCompleta);
 					values.put(MediaStore.Audio.Media.IS_RINGTONE, true);
 					values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp3");
-					values.put(MediaStore.MediaColumns.TITLE, "hola");
+					values.put(MediaStore.MediaColumns.TITLE, nombre);
 
-					Uri uri = MediaStore.Audio.Media.getContentUriForPath(path);
+					Uri uri = MediaStore.Audio.Media.getContentUriForPath(rutaCompleta);
 					Uri newUri = contexto.getContentResolver().insert(uri, values);
 
 					RingtoneManager.setActualDefaultRingtoneUri(contexto, RingtoneManager.TYPE_RINGTONE, newUri);
@@ -388,10 +477,7 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 
 	}
 
-	public String darDireccionSDcard()
-	{
-		return  DescargasRingtones.darDireccionSDcard();
-	}
+
 
 
 
