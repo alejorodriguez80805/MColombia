@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/21/trunk/Mini-Colombia/src/com/mini_colombia/servicios
+END
+JSSEProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/16/trunk/Mini-Colombia/src/com/mini_colombia/servicios/JSSEProvider.java
+END
+DescargarImagenOnline.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/!svn/ver/21/trunk/Mini-Colombia/src/com/mini_colombia/servicios/DescargarImagenOnline.java
+END
+ObtenerImagen.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/16/trunk/Mini-Colombia/src/com/mini_colombia/servicios/ObtenerImagen.java
+END
+Resize.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/16/trunk/Mini-Colombia/src/com/mini_colombia/servicios/Resize.java
+END
+MailClient.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/16/trunk/Mini-Colombia/src/com/mini_colombia/servicios/MailClient.java
+END

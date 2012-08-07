@@ -1,0 +1,109 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mini_colombia"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="15" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <application
+        android:icon="@drawable/icono_app"
+        android:label="MINI Colombia"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".InicioActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".InstruccionesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".ManejadorTabs"
+            android:screenOrientation="portrait"
+            android:theme="@style/tabTheme" />
+
+        <!-- Declaracion de las actividades de la seccion familia -->
+        <activity
+            android:name=".familia.FamiliaInicio"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+        <activity
+            android:name=".familia.FamiliaModelos"
+            android:screenOrientation="portrait"
+            android:theme="@style/tabTheme" />
+        <activity
+            android:name=".familia.FamiliaEdicion"
+            android:screenOrientation="portrait"
+            android:theme="@style/tabTheme" />
+        <activity
+            android:name=".familia.FamiliaTestDrive"
+            android:screenOrientation="portrait"
+            android:theme="@style/tabTheme" />
+        <activity
+            android:name=".familia.FamiliaSolicitud"
+            android:screenOrientation="portrait"
+            android:theme="@style/tabTheme" />
+
+        <!-- Declaracion de las actividades de la seccion comunidad -->
+        <activity android:name=".comunidad.ComunidadInicio" />
+
+        <!-- Declaracion de las actividades de la seccion noticias -->
+        <activity
+            android:name=".noticias.NoticiasInicio"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+        <activity
+            android:name=".noticias.NoticiasNoticia"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+        <activity
+            android:name=".noticias.NoticiasCategorias"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+        <!-- Declaracion de las actividades de la seccion vitrinas -->
+        <activity
+            android:name=".vitrinas.VitrinasInicio"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+
+        <!-- Declaracion de las actividades de la seccion descargas -->
+        <activity
+            android:name=".descargas.DescargasInicio"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+        <activity
+            android:name=".descargas.DescargasWallpapers"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+        <activity
+            android:name=".descargas.DescargasRingtones"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+        <activity
+            android:name=".descargas.DescargasImagen"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+        <activity
+            android:name=".auxiliares.Ringtone"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+
+        <service android:name=".servicios.DescargarAudioOnline" />
+    </application>
+
+</manifest>

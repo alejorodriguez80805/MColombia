@@ -1,0 +1,113 @@
+#
+# generated on 2012/07/26 01:05:35
+#
+# --table-start--
+dataClass=com.mini_colombia.values.Modelo
+tableName=modelo
+# --table-fields-start--
+# --field-start--
+fieldName=imagen
+# --field-end--
+# --field-start--
+fieldName=nombre
+id=true
+indexName=modelo_nombre_idx
+# --field-end--
+# --field-start--
+fieldName=thumbnail
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.mini_colombia.values.Edicion
+tableName=edicion
+# --table-fields-start--
+# --field-start--
+fieldName=imagen
+# --field-end--
+# --field-start--
+fieldName=nombre
+id=true
+indexName=edicion_nombre_idx
+# --field-end--
+# --field-start--
+fieldName=descripcion
+dataPersister=LONG_STRING
+# --field-end--
+# --field-start--
+fieldName=thumbnail
+# --field-end--
+# --field-start--
+fieldName=test_drive
+# --field-end--
+# --field-start--
+fieldName=modelo
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=templateColor
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.mini_colombia.values.Persistencia
+tableName=persistencia
+# --table-fields-start--
+# --field-start--
+fieldName=bandera
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.mini_colombia.values.Timestamp
+tableName=timestamp
+# --table-fields-start--
+# --field-start--
+fieldName=timestamp
+dataPersister=BIG_DECIMAL
+# --field-end--
+# --field-start--
+fieldName=identificador
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.mini_colombia.values.Noticia
+tableName=noticia
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=categoria
+# --field-end--
+# --field-start--
+fieldName=resumen
+# --field-end--
+# --field-start--
+fieldName=pagina
+dataPersister=LONG_STRING
+# --field-end--
+# --field-start--
+fieldName=titulo
+indexName=noticia_titulo_idx
+# --field-end--
+# --field-start--
+fieldName=thumbnail
+dataPersister=LONG_STRING
+# --field-end--
+# --field-start--
+fieldName=fechaCreacion
+# --field-end--
+# --field-start--
+fieldName=url
+dataPersister=LONG_STRING
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

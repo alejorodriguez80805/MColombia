@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/13/trunk/Mini-Colombia/libs
+END
+activation.jar
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/13/trunk/Mini-Colombia/libs/activation.jar
+END
+mail.jar
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/13/trunk/Mini-Colombia/libs/mail.jar
+END
+ormlite-android-4.41.jar
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/6/trunk/Mini-Colombia/libs/ormlite-android-4.41.jar
+END
+android-support-v4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/3/trunk/Mini-Colombia/libs/android-support-v4.jar
+END
+additionnal.jar
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/13/trunk/Mini-Colombia/libs/additionnal.jar
+END
+ormlite-core-4.41.jar
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/6/trunk/Mini-Colombia/libs/ormlite-core-4.41.jar
+END

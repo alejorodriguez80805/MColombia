@@ -1,0 +1,86 @@
+<resources>
+
+    <string name="app_name">Mini-Colombia</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="Instrucciones">INSTRUCCIONES</string>
+    <string name="title_activity_inicio">InicioActivity</string>
+    <string name="Autogermana">Autogermana</string>
+    <string name="Separador">.......................................................</string>
+    <string name="Instruccion1">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</string>
+    <string name="Mini">Mini.</string>
+    <string name="btn_ini_instrucciones">btn_ini_instrucciones</string>
+    <string name="solicitar_test_drive">SOLICITAR TEST DRIVE</string>
+    <string name="TEST_DRIVE">TEST DRIVE.</string>
+    <string name="NOTICIAS">NOTICIAS.</string>
+    <string name="DESCARGAS" >DESCARGAS.</string>
+    <string name="WALLPAPERS" >WALLPAPERS.</string>
+    <string name="RINGTONES" >RINGTONES.</string>
+
+    <!-- Constantes compartidas para cargar y acutalizar modelo y edicion -->
+
+
+    <!-- Tags modelo -->
+    <string name="TAG_MODELO">modelos</string>
+    <string name="TAG_IMAGEN_MODELO">imagen</string>
+    <string name="TAG_NOMBRE_MODELO">nombre</string>
+    <string name="TAG_THUMBNAIL_MODELO">thumbnail</string>
+    
+
+    <!-- Tags ediciones -->
+    <string name="TAG_EDICIONES">ediciones</string>
+    <string name="TAG_IMAGEN_EDICION">imagen</string>
+    <string name="TAG_NOMBRE_EDICION">nombre</string>
+    <string name="TAG_DESCRIPCION_EDICION">descripcion</string>
+    <string name="TAG_IMAGEN_THUMBNAIL_EDICION">thumbnail</string>
+    <string name="TAG_TEST_DRIVE_EDICION">test_drive</string>
+    <string name="TAG_TEMPLATE_EDICION">template_color</string>
+
+    <!-- Constante para el nombre de las imagenes -->
+    <string name="CONSTANTE_NOMBRE_IMAGEN_MODELO">imagen_modelo_</string>
+    <string name="CONSTANTE_THUMBNAIL_MODELO">imagen_thumbnail_modelo_</string>
+    <string name="CONSTANTE_NOMBRE_IMAGEN_EDICION">imagen_edicion_</string>
+    <string name="CONSTANTE_NOMBRE_THUMBNAIL_EDICION">imagen_thumbnail_edicion_</string>
+    <string name="CONSTANTE_NOMBRE_THUMBNAIL_NOTICIA">imagen_thumbnail_noticia_</string>
+
+    <!-- Constantes URL -->
+    <string name="CONSTANTE_CARGAR_MODELO_EDICION_URL">http://minicolombia.herokuapp.com/familiaMini/dar-modelos/</string>
+    <string name="CONSTANTE_ACTUALIZAR_MODELO_EDICION_URL">http://minicolombia.herokuapp.com/familiaMini/hayNuevosModelos/</string>
+    <string name="CONSTANTE_CARGAR_NOTICIAS_URL">http://minicolombia.herokuapp.com/noticias/darUltimasNoticias/</string>
+    <string name = "CONSTANTE_NOTICIAS_CATEGORIAS">http://minicolombia.herokuapp.com/noticias/darNoticiasPorCategoria/</string>
+    <string name = "CONSTANTE_DESCARGAS_WALLPAPERS">http://minicolombia.herokuapp.com/descargas/darUltimosWallpapers/</string>
+    
+
+    <!-- Constantes individuales para actualizar modelo y edicion -->
+    <string name="TAG_CREAR">CREATE</string>
+    <string name="TAG_ACTUALIZAR">UPDATE</string>
+    <string name="TAG_ELIMINAR">DELETE</string>
+    <string name="TAG_NOMBRE_MODELO_EDICION">nombre_modelo</string>
+
+    <!-- Constantes compartidas para cargar -->
+    <string name="TAG_TIPO">tipo</string>
+    <string name="TAG_ACTUALIZACIONES">actualizaciones</string>
+    <string name="TAG_HAY_ACTUALIZACIONES">hayActualizaciones</string>
+    <string name="TAG_ACCION">accion</string>
+
+    <!-- Tag para el timestamp -->
+    <string name="TAG_TIMESTAMP">timestamp</string>
+    
+    <!-- Tags para la seccion de noticias -->
+    <string name="TAG_NOTICIAS">noticias</string>
+    <string name="TAG_NOTICIAS_CATEGORIA">categoria</string>
+    <string name="TAG_NOTICIAS_RESUMEN">resumen</string>
+    <string name="TAG_NOTICIAS_PAGINA">pagina</string>
+    <string name="TAG_NOTICIAS_TITULO">titulo</string>
+    <string name="TAG_NOTICIAS_THUMBNAIL">thumbnailURL</string>
+    <string name="TAG_NOTICIAS_FECHA_CREACION">fecha_creacion</string>
+    <string name = "TAG_NOTICIAS_URL">paginaURL</string>
+
+    <!-- Tags para la seccion de descargas -->
+    <string name="TAG_WALLPAPERS">wallpapers</string>
+    <string name="TAG_WALLPAPERS_THUMBNAIL">thumbnailURL</string>
+    <string name="TAG_WALLPAPERS_IMAGEN">imagenURL</string>
+    <string name="TAG_WALLPAPERS_NOMBRE">nombre</string>
+    
+
+</resources>

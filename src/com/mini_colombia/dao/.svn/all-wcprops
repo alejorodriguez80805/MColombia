@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/20/trunk/Mini-Colombia/src/com/mini_colombia/dao
+END
+DaoPersistencia.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/7/trunk/Mini-Colombia/src/com/mini_colombia/dao/DaoPersistencia.java
+END
+DaoNoticias.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/20/trunk/Mini-Colombia/src/com/mini_colombia/dao/DaoNoticias.java
+END
+DaoModelo.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/9/trunk/Mini-Colombia/src/com/mini_colombia/dao/DaoModelo.java
+END
+DaoTimestamp.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/14/trunk/Mini-Colombia/src/com/mini_colombia/dao/DaoTimestamp.java
+END

@@ -1,0 +1,352 @@
+package com.mini_colombia.auxiliares;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+import com.mini_colombia.R;
+
+public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
+{
+	private ImageButton play;
+
+	private ImageButton pause;
+
+	private SeekBar seekBar=null;;
+
+	private MediaPlayer player;
+
+	ArrayList<String> canciones = new ArrayList<String>();
+
+	private LinearLayout layoutPrincipal;
+
+	private Context contexto;
+
+	private Handler h;
+
+	public Ringtone(LinearLayout layoutPrincipal, final String url, Context contexto)
+	{
+		this.contexto = contexto;
+		canciones.add("https://s3.amazonaws.com/mini-cooper/descargas/ringtones/04+One.mp3");
+		canciones.add("https://s3.amazonaws.com/mini-cooper/descargas/ringtones/1-04+A+Letter+To+Jimmy+Page.mp3");
+		h = new Handler();
+		this.layoutPrincipal = layoutPrincipal;
+
+		LinearLayout layoutModulo;
+		LinearLayout layoutMargenes;
+
+ 
+
+		layoutModulo = new LinearLayout(contexto);
+		layoutModulo.setBackgroundResource(R.drawable.fondo_ringtones);
+		layoutModulo.setOrientation(LinearLayout.VERTICAL);
+
+		layoutMargenes = new LinearLayout(contexto);
+		LinearLayout.LayoutParams paramsLayoutMargenes = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		paramsLayoutMargenes.setMargins(20, 10, 20, 0);
+		layoutMargenes.setLayoutParams(paramsLayoutMargenes);
+		layoutMargenes.setOrientation(LinearLayout.VERTICAL);
+
+
+
+		RelativeLayout relSuperior = new RelativeLayout(contexto);
+		RelativeLayout.LayoutParams relSupParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relSuperior.setLayoutParams(relSupParams);
+
+		TextView textoRingtone = new TextView(contexto);
+		textoRingtone.setText("Ringtone 1");
+		textoRingtone.setTextColor(Color.WHITE);
+		RelativeLayout.LayoutParams paramsTRingtone = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		paramsTRingtone.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		relSuperior.addView(textoRingtone,paramsTRingtone);
+
+
+		ImageButton botonPlay = new ImageButton(contexto);
+		botonPlay.setImageResource(R.drawable.play);
+		botonPlay.setBackgroundColor(Color.TRANSPARENT);
+		RelativeLayout.LayoutParams paramsBPlay = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		paramsBPlay.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		botonPlay.setId(1);
+		botonPlay.setOnClickListener(new OnClickListener() 
+		{
+
+			@Override
+			public void onClick(View v) 
+			{
+
+					player = new MediaPlayer();
+					player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+					try 
+					{
+						player.setDataSource(url);
+						player.setOnPreparedListener((OnPreparedListener) darContexto());
+
+					} 
+					catch (IllegalArgumentException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+					catch (IllegalStateException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+					catch (IOException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					player.prepareAsync();
+
+			}
+		});
+		relSuperior.addView(botonPlay,paramsBPlay);			
+
+		ImageButton botonPause = new ImageButton(contexto);
+		botonPause.setImageResource(R.drawable.pause);
+		botonPause.setBackgroundColor(Color.TRANSPARENT);
+		RelativeLayout.LayoutParams paramsBPause = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		paramsBPause.addRule(RelativeLayout.LEFT_OF, botonPlay.getId());
+		paramsBPause.setMargins(0, 0, 25, 0);
+		botonPause.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) 
+			{
+				player.pause();
+			}
+		});
+		relSuperior.addView(botonPause,paramsBPause);
+
+
+		layoutMargenes.addView(relSuperior);
+
+		seekBar = new SeekBar(contexto);
+		//		seekBar.setThumb(getResources().getDrawable(R.drawable.pause));	
+		//		seekBar.setProgressDrawable(getResources().getDrawable(R.drawable.seekbar_progress_bg));
+		layoutMargenes.addView(seekBar);
+
+		RelativeLayout relInferior = new RelativeLayout(contexto);
+		RelativeLayout.LayoutParams r = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		r.setMargins(0, 15, 0, 0);
+		relInferior.setLayoutParams(r);
+
+		Button botonPonerRingtone = new Button(contexto);
+		botonPonerRingtone.setBackgroundResource(R.drawable.poner_ringtone);
+		RelativeLayout.LayoutParams paramsBPRingtone = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+		paramsBPRingtone.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		relInferior.addView(botonPonerRingtone, paramsBPRingtone);
+
+		Button botonDescargar = new Button(contexto);
+		botonDescargar.setBackgroundResource(R.drawable.descargar_ringtone);
+		RelativeLayout.LayoutParams paramsBDescargar = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+		paramsBDescargar.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		relInferior.addView(botonDescargar, paramsBDescargar);
+
+		layoutMargenes.addView(relInferior);
+
+		layoutModulo.addView(layoutMargenes);
+		layoutPrincipal.addView(layoutModulo);
+
+		//			Ringtone r1 = new Ringtone(botonPlay, botonPause, sb, player);
+
+
+
+
+
+
+		//		this.play = play;
+		//		this.pause = pause;
+		//		this.seekBar = seekBar;
+		//		this.player = player;
+		//
+		//		play.setOnClickListener(new OnClickListener() {
+		//
+		//			@Override
+		//			public void onClick(View v) 
+		//			{
+		//				if(player.getCurrentPosition()>0)
+		//				{
+		//					player.start();
+		//				}
+		//				else
+		//					player.prepareAsync();
+		//			}
+		//		});
+		//
+		//		pause.setOnClickListener(new OnClickListener() {
+		//
+		//			@Override
+		//			public void onClick(View v) 
+		//			{
+		//				player.pause();
+		//			}
+		//		});
+		//
+		//		player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+		//
+		//			@Override
+		//			public void onPrepared(MediaPlayer mp) 
+		//			{
+		//				player.start();
+		//				int duracion = player.getDuration();
+		//				new Player().execute(duracion);
+		//			}
+		//		});
+	}
+
+	private class Player extends AsyncTask<Integer, Integer, Void>
+	{
+		SeekBar seekBar;
+
+		MediaPlayer playerActual;
+
+		int progreso;
+
+		@Override
+		protected void onPreExecute() 
+		{
+			seekBar= darSeekBarActual();
+			playerActual = darPlayerActual();
+			progreso=0;
+		}
+
+
+		@Override
+		protected Void doInBackground(Integer... params) 
+		{
+			int duracion = params[0];
+			seekBar.setMax(duracion);
+			while(progreso<duracion && playerActual.isPlaying())
+			{
+				progreso = playerActual.getCurrentPosition();
+				publishProgress(progreso);
+			}
+			return null;
+		}
+
+		@Override
+		protected void onProgressUpdate(Integer... values) 
+		{
+			seekBar.setProgress(values[0]);
+		}
+
+		@Override
+		protected void onPostExecute(Void result) 
+		{
+			player.stop();
+			player.release();
+			seekBar.setProgress(0);
+		}
+
+	}
+
+	public SeekBar darSeekBarActual()
+	{
+		return this.seekBar;
+	}
+
+	public MediaPlayer darPlayerActual()
+	{
+		return this.player;
+	}
+
+	@Override
+	public void onPrepared(MediaPlayer mp) 
+	{
+		player.start();
+		final int duracion = player.getDuration();
+		darSeekBarActual().setMax(duracion);
+		new Player().execute(duracion);
+//		hilo(duracion);
+//		new Thread(new Runnable() {
+//			
+//			int progreso = 0;
+//
+//			@Override
+//			public void run() 
+//			{
+//				while(progreso<duracion)
+//				{
+//					h.post(new Runnable() 
+//					{
+//						
+//						@Override
+//						public void run() 
+//						{
+//							darSeekBarActual().setProgress(darPlayerActual().getCurrentPosition());
+//							
+//						}
+//					});
+//				}
+//				
+//				darPlayerActual().seekTo(0);
+//				darPlayerActual().stop();
+//				
+//				
+//			}
+//		}).start();
+
+
+	}
+
+	public void hilo(final int duracion)
+	{
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() 
+			{
+				int progreso = 0;
+				MediaPlayer playerActual = darPlayerActual();
+				darSeekBarActual().setMax(duracion);
+				while(progreso<duracion)
+				{
+					progreso = playerActual.getCurrentPosition();
+					h.post(new Runnable() {
+
+						@Override
+						public void run() 
+						{
+							darSeekBarActual().setProgress(darPlayerActual().getCurrentPosition());
+
+						}
+					});
+				}
+				darPlayerActual().seekTo(0);
+				darPlayerActual().stop();
+				
+
+			}
+		};
+		new Thread(runnable).start();
+
+	}
+	
+	public Context darContexto()
+	{
+		return this;
+	}
+
+
+
+
+}
