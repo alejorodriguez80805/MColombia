@@ -67,7 +67,7 @@ public class InicioActivity extends Activity
 		NetworkInfo red  = conMgr.getActiveNetworkInfo();
 		boolean conexionInternet = red!=null && red.getState() == NetworkInfo.State.CONNECTED;
 
-//asfjadhfjladfhjaljk
+//asfjadhfjladfhjaljk asdfasdfadsf
 
 		try 
 		{
