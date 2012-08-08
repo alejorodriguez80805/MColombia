@@ -48,7 +48,7 @@
     <string name="CONSTANTE_ACTUALIZAR_MODELO_EDICION_URL">http://minicolombia.herokuapp.com/familiaMini/hayNuevosModelos/</string>
     <string name="CONSTANTE_CARGAR_NOTICIAS_URL">http://minicolombia.herokuapp.com/noticias/darUltimasNoticias/</string>
     <string name = "CONSTANTE_NOTICIAS_CATEGORIAS">http://minicolombia.herokuapp.com/noticias/darNoticiasPorCategoria/</string>
-    <string name = "CONSTANTE_DESCARGAS_WALLPAPERS">http://minicolombia.herokuapp.com/descargas/darUltimosWallpapers/</string>
+    <string name = "CONSTANTE_DESCARGAS_WALLPAPERS">http://minicolombia.herokuapp.com/descargas/darWallpapers/</string>
     <string name = "CONSTANTE_DESCARGAS_RINGTONES">http://minicolombia.herokuapp.com/descargas/darRingtones/</string>
 
     <!-- Constantes individuales para actualizar modelo y edicion -->
