@@ -81,6 +81,7 @@
     <string name="TAG_WALLPAPERS_THUMBNAIL">thumbnailURL</string>
     <string name="TAG_WALLPAPERS_IMAGEN">imagenURL</string>
     <string name="TAG_WALLPAPERS_NOMBRE">nombre</string>
+    <string name="TAG_WALLPAPERS_NUMERO_TOTAL">num_wallpapers</string>
     <string name="TAG_NOMBRE_ARCHIVO_RINGTONE">/Mini.mp3</string>
     <string name="TAG_RINGTONES">ringtones</string>
     <string name="TAG_NOMBRE_RINGTONES">nombre</string>
