@@ -168,7 +168,7 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 			{
 				contexto.clickStop(id);
 				habilitarDescargasYRingtone();
-				player.pause();
+				player.stop();
 			}
 		});
 		relSuperior.addView(botonPause,paramsBPause);

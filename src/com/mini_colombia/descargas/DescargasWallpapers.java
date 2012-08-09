@@ -14,10 +14,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +27,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.RelativeLayout.LayoutParams;
 
 import com.mini_colombia.R;
@@ -49,7 +52,7 @@ public class DescargasWallpapers extends Activity
 		thumbnails = new ArrayList<Bitmap>();
 		imagenes = new ArrayList<Bitmap>();
 		setContentView(R.layout.activity_descargas_wallpapers);
-		new DescargarThumbnails().execute("");
+		new DescargarThumbnails().execute(NUM_WALLPAPERS);
 
 
 	}
@@ -61,7 +64,7 @@ public class DescargasWallpapers extends Activity
 	}
 
 
-	private class DescargarThumbnails extends AsyncTask<String, Integer, Boolean>
+	private class DescargarThumbnails extends AsyncTask<Integer, Integer, Boolean>
 	{
 
 		ProgressDialog progress;
@@ -74,15 +77,38 @@ public class DescargasWallpapers extends Activity
 		}
 
 		@Override
-		protected Boolean doInBackground(String... params) 
+		/**
+		 * Metodo que descarga tanto 
+		 */
+		protected Boolean doInBackground(Integer... params) 
 		{
+
+			boolean respuesta = false;
 			Parser jparser = new Parser();
 			JSONObject jsonObject = jparser.getJSONFromUrl(getString(R.string.CONSTANTE_DESCARGAS_WALLPAPERS));
 			try 
 			{
 				JSONArray wallpapers = jsonObject.getJSONArray(getString(R.string.TAG_WALLPAPERS));
+				
+				int parametro = params[0];
+				int cota;
+				int i;
+				if(parametro!=0)
+				{
+					cota = parametro;
+					respuesta = true;
+					i = 0;
+				}
+					
+				else
+				{
+					cota = wallpapers.length();
+					i= NUM_WALLPAPERS;
+				}
 
-				for(int i = 0;i<wallpapers.length();i++)
+				
+
+				while(i<cota)
 				{
 					JSONObject wallpaper = wallpapers.getJSONObject(i);
 
@@ -97,6 +123,8 @@ public class DescargasWallpapers extends Activity
 					//Manejo imagen
 					String urlImagen = wallpaper.getString(getString(R.string.TAG_WALLPAPERS_IMAGEN));
 					imagenes.add(DescargarImagenOnline.descargarImagen(urlImagen));
+					
+					i++;
 				}
 			} 
 			catch (JSONException e) 
@@ -105,7 +133,7 @@ public class DescargasWallpapers extends Activity
 				e.printStackTrace();
 			}
 
-			return true;
+			return respuesta;
 		}
 
 		@Override
@@ -113,35 +141,60 @@ public class DescargasWallpapers extends Activity
 		{
 			if(progress.isShowing())
 				progress.dismiss();
-			pintarPantalla();
+			pintarPantalla(result);
 		}
 
 	}
 
-	private void pintarPantalla()
+	private void pintarPantalla(boolean numVez)
 	{
 		LinearLayout layoutPrincipal = (LinearLayout) findViewById(R.id.linearLayoutWallpapers);
-
-		for(int i=0;i<NUM_WALLPAPERS;i++)
+		int i;
+		int cota;
+		boolean pintarVerMas = false;;
+		
+		if(numVez)
+		{
+			i = 0;
+			cota = NUM_WALLPAPERS;
+			pintarVerMas = true;
+		}
+		
+		else
+		{
+			
+			View v = new View(this);
+			LinearLayout.LayoutParams vParams = new LinearLayout.LayoutParams(10,10);
+			v.setLayoutParams(vParams);	
+			layoutPrincipal.addView(v);
+			i = NUM_WALLPAPERS;
+			cota = thumbnails.size();
+		}
+		
+		while(i<cota)
 		{
 			RelativeLayout relLayout = new RelativeLayout(this);
+			relLayout.setBackgroundColor(Color.TRANSPARENT);
+			relLayout.setBackgroundDrawable(new BitmapDrawable(thumbnails.get(i)));
 			RelativeLayout.LayoutParams relParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-
-			ImageButton ib = new ImageButton(this);
-			ib.setImageBitmap(thumbnails.get(i));
-			ib.setBackgroundColor(Color.TRANSPARENT);
-			ib.setPadding(0, 0, 0, 45);
-//			RelativeLayout.LayoutParams paramsIb = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-//			paramsIb.setMargins(0, 0, 0, 5);
-//			ib.setLayoutParams(paramsIb);
-			relLayout.addView(ib);
+			
+			
+			
+			Log.d("prueba", "" + relLayout.getWidth());
+			
+			Button thumbnail = new Button(this);
+			RelativeLayout.LayoutParams bParams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,292);
+			
 			final Bitmap imagen = imagenes.get(i);
-			ib.setId(i);
-			ib.setOnClickListener(new OnClickListener() 
-			{
+			
+			thumbnail.setLayoutParams(bParams);
+			thumbnail.setBackgroundColor(Color.TRANSPARENT);
+			relLayout.addView(thumbnail);
+			bParams.setMargins(0, 0, 0, 40);
+			thumbnail.setOnClickListener(new OnClickListener() {
 				
 				@Override
-				public void onClick(View v) 
+				public void onClick(View arg0) 
 				{
 					Intent i = new Intent(DescargasWallpapers.this, DescargasImagen.class);
 					i.putExtra(IMAGEN, imagen);
@@ -152,9 +205,11 @@ public class DescargasWallpapers extends Activity
 				}
 			});
 
-			Button b = new Button(this);
-			b.setBackgroundColor(Color.TRANSPARENT);
-			b.setOnClickListener(new OnClickListener() {
+
+			Button bDescargar = new Button(this);
+			bDescargar.setBackgroundColor(Color.TRANSPARENT);
+			bDescargar.setOnClickListener(new OnClickListener() 
+			{
 				
 				@Override
 				public void onClick(View v) 
@@ -179,36 +234,45 @@ public class DescargasWallpapers extends Activity
 			});
 			RelativeLayout.LayoutParams paramsbutton = new RelativeLayout.LayoutParams(115,50);
 			paramsbutton.setMargins(322, 245, 0, 0);
-			b.setLayoutParams(paramsbutton);
-			relLayout.addView(b);
+			bDescargar.setLayoutParams(paramsbutton);
+			relLayout.addView(bDescargar);
+
+			layoutPrincipal.addView(relLayout, relParams);
 			
-			if(i == NUM_WALLPAPERS -1)
+			i++;
+
+		}
+			
+			
+		
+			if(pintarVerMas)
 			{
 				final Button verMas = new Button(this);
 				verMas.setBackgroundColor(Color.BLACK);
+				LinearLayout.LayoutParams paramsVerMas = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
+				paramsVerMas.setMargins(0, 7, 0, 0);
+				verMas.setLayoutParams(paramsVerMas);
 				verMas.setText("VER MAS");
 				verMas.setTextSize(12);
 				verMas.setTextColor(Color.WHITE);
 				verMas.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);
-				verMas.setPadding(5, 5, 0, 5);
+//				verMas.setPadding(5, 5, 0, 5);
 				verMas.setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) 
 					{
 						verMas.setVisibility(View.GONE);
-						pintarWallpapersRestantes();
+						new DescargarThumbnails().execute(0);
 						
 					}
 				});
-				RelativeLayout.LayoutParams paramsVerMas = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
-				paramsVerMas.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-				verMas.setLayoutParams(paramsVerMas);
-				relLayout.addView(verMas);
+				layoutPrincipal.addView(verMas);
 			}
+		
 
-			layoutPrincipal.addView(relLayout, relParams);
-		}
+			
+		
 	}
 	
 	public void pintarWallpapersRestantes()
@@ -219,13 +283,13 @@ public class DescargasWallpapers extends Activity
 		{
 			RelativeLayout relLayout = new RelativeLayout(this);
 			RelativeLayout.LayoutParams relParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+			relParams.setMargins(0, 10, 0, 0);
 
 			ImageButton ib = new ImageButton(this);
 			ib.setImageBitmap(thumbnails.get(i));
 			ib.setBackgroundColor(Color.TRANSPARENT);
 			relLayout.addView(ib);
 			final Bitmap imagen = imagenes.get(i);
-			ib.setId(i);
 			ib.setOnClickListener(new OnClickListener() 
 			{
 				

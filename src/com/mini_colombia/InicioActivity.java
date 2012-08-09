@@ -801,7 +801,7 @@ public class InicioActivity extends Activity
 //		Intent i = new Intent(InicioActivity.this, InstruccionesActivity.class);
 //		startActivity(i);
 		
-		Intent i = new Intent(InicioActivity.this, com.mini_colombia.descargas.DescargasRingtones.class);
+		Intent i = new Intent(InicioActivity.this, com.mini_colombia.vitrinas.VitrinasInicio.class);
 		startActivity(i);
 
 	}
