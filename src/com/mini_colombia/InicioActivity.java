@@ -11,8 +11,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +29,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -101,6 +98,7 @@ public class InicioActivity extends Activity
 			else if(conexionInternet)
 			{
 //				new ActualizarFamilia().execute("");
+				new ActualizarNoticias().execute("");
 			}
 		} 
 		catch (SQLException e) 
@@ -163,7 +161,7 @@ public class InicioActivity extends Activity
 				String timeStamp = jsonObject.getString(getString(R.string.TAG_TIMESTAMP));
 				BigDecimal fTimestamp =new BigDecimal(timeStamp);
 
-				DaoTimestamp.primeraVez(daoTimestamp, fTimestamp);
+				DaoTimestamp.primeraVez(daoTimestamp, fTimestamp,"familia");
 
 				modelos = jsonObject.getJSONArray(getString(R.string.TAG_MODELO));
 
@@ -247,6 +245,8 @@ public class InicioActivity extends Activity
 	private class FetchInicialNoticias extends AsyncTask<String, Integer, Boolean>
 	{
 		private Dao<Noticia, Integer> daoNoticia;
+		
+		private Dao<Timestamp, Integer> daoTimestamp;
 
 		ProgressDialog progress;
 
@@ -261,12 +261,18 @@ public class InicioActivity extends Activity
 		protected Boolean doInBackground(String... params) 
 		{
 			daoNoticia = darDaoNoticia();
+			daoTimestamp = darDaoTimestamp();
 			Parser jparser = new Parser();
-			JSONObject jsonObject = jparser.getJSONFromUrl(getString(R.string.CONSTANTE_CARGAR_NOTICIAS_URL));
+			String s = (getString(R.string.CONSTANTE_CARGAR_NOTICIAS_URL))+"/0";
+			JSONObject jsonObject = jparser.getJSONFromUrl(getString(R.string.CONSTANTE_CARGAR_NOTICIAS_URL)+"0");
 
 
 			try 
 			{
+				String timeStamp = jsonObject.getString(getString(R.string.TAG_TIMESTAMP));
+				BigDecimal fTimestamp =new BigDecimal(timeStamp);
+				DaoTimestamp.primeraVez(daoTimestamp, fTimestamp,"noticias");
+				
 				JSONArray noticias = jsonObject.getJSONArray(getString(R.string.TAG_NOTICIAS));
 
 				for(int i = 0; i<noticias.length();i++)
@@ -361,7 +367,7 @@ public class InicioActivity extends Activity
 			Parser jparser = new Parser();
 			try 
 			{
-				JSONObject jsonObject = jparser.getJSONFromUrl(getString(R.string.CONSTANTE_ACTUALIZAR_MODELO_EDICION_URL)+DaoTimestamp.darTimestamp(daoTimestamp)+"/");
+				JSONObject jsonObject = jparser.getJSONFromUrl(getString(R.string.CONSTANTE_ACTUALIZAR_MODELO_EDICION_URL)+DaoTimestamp.darTimestamp(daoTimestamp,"familia")+"/");
 
 				hayActualizaciones = jsonObject.getBoolean(getString(R.string.TAG_HAY_ACTUALIZACIONES));
 				if(hayActualizaciones)
@@ -546,8 +552,9 @@ public class InicioActivity extends Activity
 	private class ActualizarNoticias extends AsyncTask<String, Integer, Boolean>
 	{
 
-
+		private Dao<Timestamp, Integer> daoTimestamp;
 		private Dao<Noticia, Integer> daoNoticia;
+		private boolean hayActualizaciones;
 
 		ProgressDialog progress;
 		
@@ -562,41 +569,59 @@ public class InicioActivity extends Activity
 		protected Boolean doInBackground(String... params) 
 		{
 			daoNoticia = darDaoNoticia();
+			daoTimestamp = darDaoTimestamp();
 			Parser jparser = new Parser();
-			JSONObject jsonObject = jparser.getJSONFromUrl(getString(R.string.CONSTANTE_CARGAR_NOTICIAS_URL));
+			
 
 
 
 			JSONArray noticias;
 			try 
 			{
-				noticias = jsonObject.getJSONArray(getString(R.string.TAG_NOTICIAS));
-				for(int i = 0; i<noticias.length();i++)
+				BigDecimal d = DaoTimestamp.darTimestamp(daoTimestamp,"noticias");
+				String s = getString(R.string.CONSTANTE_CARGAR_NOTICIAS_URL)+DaoTimestamp.darTimestamp(daoTimestamp,"noticias")+"/";
+				JSONObject jsonObject = jparser.getJSONFromUrl(getString(R.string.CONSTANTE_CARGAR_NOTICIAS_URL)+DaoTimestamp.darTimestamp(daoTimestamp,"noticias")+"/");
+				
+				hayActualizaciones = jsonObject.getBoolean(getString(R.string.TAG_HAY_ACTUALIZACIONES));
+				if(hayActualizaciones)
 				{
-					UpdateBuilder<Noticia, Integer> updateBuilder = daoNoticia.updateBuilder();
-					JSONObject noticia = noticias.getJSONObject(i);
-					updateBuilder.updateColumnValue("categoria", noticia.getString(getString(R.string.TAG_NOTICIAS_CATEGORIA)));
-					updateBuilder.updateColumnValue("resumen", noticia.getString(getString(R.string.TAG_NOTICIAS_RESUMEN)));
-//					String pagina = noticia.getString(getString(R.string.TAG_NOTICIAS_PAGINA));
-//					updateBuilder.updateColumnValue("pagina", pagina);
-					updateBuilder.updateColumnValue("titulo", noticia.getString(getString(R.string.TAG_NOTICIAS_TITULO)));
+					
+					String timeStamp = jsonObject.getString(getString(R.string.TAG_TIMESTAMP));
+					BigDecimal fTimestamp =new BigDecimal(timeStamp);
+					DaoTimestamp.primeraVez(daoTimestamp, fTimestamp,"noticias");
+					
+					
+					
+					noticias = jsonObject.getJSONArray(getString(R.string.TAG_NOTICIAS));
+					for(int i = 0; i<noticias.length();i++)
+					{
+						UpdateBuilder<Noticia, Integer> updateBuilder = daoNoticia.updateBuilder();
+						JSONObject noticia = noticias.getJSONObject(i);
+						updateBuilder.updateColumnValue("categoria", noticia.getString(getString(R.string.TAG_NOTICIAS_CATEGORIA)));
+						updateBuilder.updateColumnValue("resumen", noticia.getString(getString(R.string.TAG_NOTICIAS_RESUMEN)));
+//						String pagina = noticia.getString(getString(R.string.TAG_NOTICIAS_PAGINA));
+//						updateBuilder.updateColumnValue("pagina", pagina);
+						updateBuilder.updateColumnValue("titulo", noticia.getString(getString(R.string.TAG_NOTICIAS_TITULO)));
 
-					//Manejo del thumbnail
-					String nombreImagenEliminar = getString(R.string.CONSTANTE_NOMBRE_THUMBNAIL_NOTICIA)+noticia.getString(getString(R.string.TAG_NOTICIAS_CATEGORIA));
-					eliminarImagen( nombreImagenEliminar);
-					String thumbnail = noticia.getString(getString(R.string.TAG_NOTICIAS_THUMBNAIL));
-					String nombreThumbnail = getString(R.string.CONSTANTE_NOMBRE_THUMBNAIL_NOTICIA) + noticia.getString(getString(R.string.TAG_NOTICIAS_CATEGORIA));
-					descargarImagen(thumbnail, nombreThumbnail);
-					updateBuilder.updateColumnValue("thumbnail", nombreThumbnail);
+						//Manejo del thumbnail
+						String nombreImagenEliminar = getString(R.string.CONSTANTE_NOMBRE_THUMBNAIL_NOTICIA)+noticia.getString(getString(R.string.TAG_NOTICIAS_CATEGORIA));
+						eliminarImagen( nombreImagenEliminar);
+						String thumbnail = noticia.getString(getString(R.string.TAG_NOTICIAS_THUMBNAIL));
+						String nombreThumbnail = getString(R.string.CONSTANTE_NOMBRE_THUMBNAIL_NOTICIA) + noticia.getString(getString(R.string.TAG_NOTICIAS_CATEGORIA));
+						descargarImagen(thumbnail, nombreThumbnail);
+						updateBuilder.updateColumnValue("thumbnail", nombreThumbnail);
 
-					updateBuilder.updateColumnValue("fechaCreacion",noticia.getString(getString(R.string.TAG_NOTICIAS_FECHA_CREACION)));
-					updateBuilder.updateColumnValue("url",noticia.getString(getString(R.string.TAG_NOTICIAS_URL)));
-					updateBuilder.where().eq("categoria", noticia.getString(getString(R.string.TAG_NOTICIAS_CATEGORIA)));
-					daoNoticia.update(updateBuilder.prepare());
+						updateBuilder.updateColumnValue("fechaCreacion",noticia.getString(getString(R.string.TAG_NOTICIAS_FECHA_CREACION)));
+						updateBuilder.updateColumnValue("url",noticia.getString(getString(R.string.TAG_NOTICIAS_URL)));
+						updateBuilder.where().eq("categoria", noticia.getString(getString(R.string.TAG_NOTICIAS_CATEGORIA)));
+						daoNoticia.update(updateBuilder.prepare());
 
 
 
+					}
 				}
+				
+
 				
 				List<Noticia> n = daoNoticia.queryForAll();
 				n.size();

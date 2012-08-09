@@ -9,10 +9,12 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mini_colombia.R;
 import com.mini_colombia.auxiliares.Ringtone;
@@ -40,6 +42,9 @@ public class DescargasRingtones extends Activity
 		arreglo = new ArrayList<String>();
 		new DescargarJsonRingtones().execute(getString(R.string.CONSTANTE_DESCARGAS_RINGTONES));
 
+		Typeface tipoMini = Typeface.createFromAsset(getAssets(), "fonts/mibd.ttf");
+		TextView titulo = (TextView) findViewById(R.id.tituloDescargasRingtones);
+		titulo.setTypeface(tipoMini);
 
 	}
 

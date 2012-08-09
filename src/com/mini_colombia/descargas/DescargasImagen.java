@@ -12,12 +12,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mini_colombia.R;
 import com.mini_colombia.servicios.Resize;
@@ -36,8 +40,18 @@ public class DescargasImagen extends Activity
 		Bundle b = getIntent().getExtras();
 		bitmapPreliminar = (Bitmap) b.get(IMAGEN);
 		Bitmap bitmapFinal = Resize.resizeBitmap(bitmapPreliminar, 297, 445);
+		int actual = getIntent().getIntExtra("actual", 0);
+		int total = getIntent().getIntExtra("total", 0);
 		setContentView(R.layout.activity_descargas_imagen);
 
+		Typeface tipoMini = Typeface.createFromAsset(getAssets(), "fonts/mibd.ttf");
+		TextView titulo = (TextView)findViewById(R.id.wallpapersTituloImagen);
+		titulo.setText(actual + " de "+ total);
+		titulo.setTypeface(tipoMini);
+		titulo.setGravity(Gravity.CENTER_VERTICAL| Gravity.CENTER_HORIZONTAL);
+		titulo.setTextColor(Color.parseColor("#a8a8a8"));
+		
+		
 		ImageView iv = (ImageView) findViewById(R.id.imagenWallpaper);
 		iv.setImageBitmap(bitmapFinal);
 

@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 import android.app.ActivityGroup;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.mini_colombia.R;
 
@@ -24,6 +26,10 @@ public class DescargasInicio  extends ActivityGroup
 		this.grupoDescargas = this;
 		
 		historialViews = new ArrayList<View>();
+		
+		Typeface tipoMini = Typeface.createFromAsset(getAssets(), "fonts/mibd.ttf");
+		TextView titulo = (TextView)findViewById(R.id.tituloDescargasInicio);
+		titulo.setTypeface(tipoMini);
 	}
 	
 	

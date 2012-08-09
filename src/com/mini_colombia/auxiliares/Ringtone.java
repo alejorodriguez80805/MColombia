@@ -124,6 +124,7 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 			public void onClick(View v) 
 			{
 
+				
 				contexto.clickPlay(id);
 				deshabilitarDescargasYRingtone();
 				player = new MediaPlayer();
@@ -150,6 +151,7 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 					e.printStackTrace();
 				}
 				player.prepareAsync();
+				deshabilitarPlay();
 				progress = ProgressDialog.show(padreTabs,"","Cargando ringtone",false);
 			}
 		});
@@ -168,6 +170,7 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 			{
 				contexto.clickStop(id);
 				habilitarDescargasYRingtone();
+				habilitarPlay();
 				player.stop();
 			}
 		});
@@ -216,6 +219,21 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 					Uri newUri = contexto.getContentResolver().insert(uri, values);
 
 					RingtoneManager.setActualDefaultRingtoneUri(contexto, RingtoneManager.TYPE_RINGTONE, newUri);
+					
+					AlertDialog.Builder alertBuilder = new AlertDialog.Builder(padreTabs);
+					alertBuilder.setMessage("Felicitaciones! Tienes un nuevo ringtone");
+					alertBuilder.setCancelable(false);
+					alertBuilder.setNeutralButton("Aceptar", new DialogInterface.OnClickListener() 
+					{
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+
+						}
+					});
+					AlertDialog alerta = alertBuilder.create();
+					alerta.show();
 				}
 				else
 				{
@@ -428,6 +446,16 @@ public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 	{
 		botonPonerRingtone.setClickable(true);
 		botonDescargar.setClickable(true);
+	}
+	
+	public void deshabilitarPlay()
+	{
+		botonPlay.setClickable(false);
+	}
+	
+	public void habilitarPlay()
+	{
+		botonPlay.setClickable(true);
 	}
 
 	/**

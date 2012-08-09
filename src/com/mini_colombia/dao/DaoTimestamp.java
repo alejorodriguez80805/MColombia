@@ -10,15 +10,15 @@ import com.mini_colombia.values.Timestamp;
 
 public class DaoTimestamp 
 {
-	public static void primeraVez(Dao<Timestamp, Integer> dao, BigDecimal timeStamp) throws SQLException
+	public static void primeraVez(Dao<Timestamp, Integer> dao, BigDecimal timeStamp,String identificador) throws SQLException
 	{
-		Timestamp t = new Timestamp(timeStamp, "nombre");
+		Timestamp t = new Timestamp(timeStamp, identificador);
 		dao.create(t);
 	}
 	
-	public static BigDecimal darTimestamp(Dao<Timestamp, Integer> dao) throws SQLException
+	public static BigDecimal darTimestamp(Dao<Timestamp, Integer> dao, String identificador) throws SQLException
 	{
-		List<Timestamp> t = dao.queryForEq("identificador", "nombre");
+		List<Timestamp> t = dao.queryForEq("identificador", identificador);
 		return t.get(0).getTimestamp();
 	}
 	

@@ -14,8 +14,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,8 +27,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 
 import com.mini_colombia.R;
 import com.mini_colombia.parser.Parser;
@@ -44,6 +44,8 @@ public class DescargasWallpapers extends Activity
 
 	private ArrayList<Bitmap> thumbnails;
 	private ArrayList<Bitmap> imagenes;
+	
+	private int numWallpapers;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -53,6 +55,10 @@ public class DescargasWallpapers extends Activity
 		imagenes = new ArrayList<Bitmap>();
 		setContentView(R.layout.activity_descargas_wallpapers);
 		new DescargarThumbnails().execute(NUM_WALLPAPERS);
+		
+		Typeface tipoMini = Typeface.createFromAsset(getAssets(), "fonts/mibd.ttf");
+		TextView titulo = (TextView)findViewById(R.id.tituloDescargasWallpapers);
+		titulo.setTypeface(tipoMini);
 
 
 	}
@@ -89,7 +95,7 @@ public class DescargasWallpapers extends Activity
 			try 
 			{
 				JSONArray wallpapers = jsonObject.getJSONArray(getString(R.string.TAG_WALLPAPERS));
-				
+				numWallpapers = Integer.parseInt(jsonObject.getString(getString(R.string.TAG_WALLPAPERS_NUMERO_TOTAL))); 
 				int parametro = params[0];
 				int cota;
 				int i;
@@ -173,6 +179,8 @@ public class DescargasWallpapers extends Activity
 		
 		while(i<cota)
 		{
+			final int posicionActual =i;
+			
 			RelativeLayout relLayout = new RelativeLayout(this);
 			relLayout.setBackgroundColor(Color.TRANSPARENT);
 			relLayout.setBackgroundDrawable(new BitmapDrawable(thumbnails.get(i)));
@@ -198,6 +206,8 @@ public class DescargasWallpapers extends Activity
 				{
 					Intent i = new Intent(DescargasWallpapers.this, DescargasImagen.class);
 					i.putExtra(IMAGEN, imagen);
+					i.putExtra("actual", posicionActual+1);
+					i.putExtra("total", numWallpapers);
 					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					View v1 = DescargasInicio.grupoDescargas.getLocalActivityManager().startActivity("", i).getDecorView();
 					DescargasInicio actividadPadre = (DescargasInicio) getParent();
