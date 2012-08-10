@@ -14,6 +14,6 @@ public class VitrinasInicio extends Activity
 		super.onCreate(savedInstanceState);
 		TextView t = new TextView(this);
 		t.setText("hola familia");
-		setContentView(R.layout.activity_inicio_vitrinas);
+		setContentView(R.layout.activity_vitrinas_inicio);
 	}
 }

@@ -13,9 +13,9 @@
     <string name="solicitar_test_drive">SOLICITAR TEST DRIVE</string>
     <string name="TEST_DRIVE">TEST DRIVE.</string>
     <string name="NOTICIAS">NOTICIAS.</string>
-    <string name="DESCARGAS" >DESCARGAS.</string>
-    <string name="WALLPAPERS" >WALLPAPERS.</string>
-    <string name="RINGTONES" >RINGTONES.</string>
+    <string name="DESCARGAS">DESCARGAS.</string>
+    <string name="WALLPAPERS">WALLPAPERS.</string>
+    <string name="RINGTONES">RINGTONES.</string>
 
     <!-- Constantes compartidas para cargar y acutalizar modelo y edicion -->
 
@@ -25,7 +25,6 @@
     <string name="TAG_IMAGEN_MODELO">imagen</string>
     <string name="TAG_NOMBRE_MODELO">nombre</string>
     <string name="TAG_THUMBNAIL_MODELO">thumbnail</string>
-    
 
     <!-- Tags ediciones -->
     <string name="TAG_EDICIONES">ediciones</string>
@@ -47,9 +46,10 @@
     <string name="CONSTANTE_CARGAR_MODELO_EDICION_URL">http://minicolombia.herokuapp.com/familiaMini/dar-modelos/</string>
     <string name="CONSTANTE_ACTUALIZAR_MODELO_EDICION_URL">http://minicolombia.herokuapp.com/familiaMini/hayNuevosModelos/</string>
     <string name="CONSTANTE_CARGAR_NOTICIAS_URL">http://minicolombia.herokuapp.com/noticias/darUltimasNoticias/</string>
-    <string name = "CONSTANTE_NOTICIAS_CATEGORIAS">http://minicolombia.herokuapp.com/noticias/darNoticiasPorCategoria/</string>
-    <string name = "CONSTANTE_DESCARGAS_WALLPAPERS">http://minicolombia.herokuapp.com/descargas/darWallpapers/</string>
-    <string name = "CONSTANTE_DESCARGAS_RINGTONES">http://minicolombia.herokuapp.com/descargas/darRingtones/</string>
+    <string name="CONSTANTE_NOTICIAS_CATEGORIAS">http://minicolombia.herokuapp.com/noticias/darNoticiasPorCategoria/</string>
+    <string name="CONSTANTE_DESCARGAS_WALLPAPERS">http://minicolombia.herokuapp.com/descargas/darWallpapers/</string>
+    <string name="CONSTANTE_DESCARGAS_RINGTONES">http://minicolombia.herokuapp.com/descargas/darRingtones/</string>
+    <string name="CONSTANTE_COMUNIDAD_GALERIA">http://minicolombia.herokuapp.com/comunidad/darImagenes/</string>
 
     <!-- Constantes individuales para actualizar modelo y edicion -->
     <string name="TAG_CREAR">CREATE</string>
@@ -65,7 +65,7 @@
 
     <!-- Tag para el timestamp -->
     <string name="TAG_TIMESTAMP">timestamp</string>
-    
+
     <!-- Tags para la seccion de noticias -->
     <string name="TAG_NOTICIAS">noticias</string>
     <string name="TAG_NOTICIAS_CATEGORIA">categoria</string>
@@ -74,7 +74,7 @@
     <string name="TAG_NOTICIAS_TITULO">titulo</string>
     <string name="TAG_NOTICIAS_THUMBNAIL">thumbnailURL</string>
     <string name="TAG_NOTICIAS_FECHA_CREACION">fecha_creacion</string>
-    <string name = "TAG_NOTICIAS_URL">paginaURL</string>
+    <string name="TAG_NOTICIAS_URL">paginaURL</string>
 
     <!-- Tags para la seccion de descargas -->
     <string name="TAG_WALLPAPERS">wallpapers</string>
@@ -86,7 +86,11 @@
     <string name="TAG_RINGTONES">ringtones</string>
     <string name="TAG_NOMBRE_RINGTONES">nombre</string>
     <string name="TAG_URL_RINGTONES">archivoURL</string>
-    
-    
+
+    <!-- Tags para la seccion de descargas -->
+    <string name="TAG_COMUNIDAD_GALERIA_IMAGENES">imagenes</string>
+    <string name="TAG_COMUNIDAD_GALERIA_NOMBRE">nombre</string>
+    <string name="TAG_COMUNIDAD_GALERIA_THUMBNAIL">thumbnailURL</string>
+    <string name="TAG_COMUNIDAD_GALERIA_IMAGEN">imagenURL</string>
 
 </resources>
