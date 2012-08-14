@@ -157,7 +157,7 @@ public class DescargasWallpapers extends Activity
 		LinearLayout layoutPrincipal = (LinearLayout) findViewById(R.id.linearLayoutWallpapers);
 		int i;
 		int cota;
-		boolean pintarVerMas = false;;
+		boolean pintarVerMas = false;
 		
 		if(numVez)
 		{

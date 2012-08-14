@@ -31,7 +31,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
@@ -51,7 +50,6 @@ import com.mini_colombia.values.Timestamp;
 public class InicioActivity extends Activity 
 {
 	private DataBaseHelper databaseHelper = null;
-
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) 

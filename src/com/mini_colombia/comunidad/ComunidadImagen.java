@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,9 +30,17 @@ import com.mini_colombia.servicios.Resize;
 
 public class ComunidadImagen extends Activity implements AsyncTaskListener<Bitmap>
 {
+	private static final String NOMBRE_CARPETA = "MINI";
+
+	private static final String SEPARADOR = "/";
+	
 	private Bitmap bImagen;
 
 	private Uri uri;
+
+	private static final String EXTENSION = ".jpg";
+
+	private String nombreImagen;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -46,7 +55,7 @@ public class ComunidadImagen extends Activity implements AsyncTaskListener<Bitma
 		TextView titulo = (TextView) findViewById(R.id.comunidad_imagen_titulo);
 		titulo.setText(posActual + " de " + size);
 
-		String nombreImagen = getIntent().getStringExtra("titulo");
+		nombreImagen = getIntent().getStringExtra("titulo");
 		TextView tituloImagen = (TextView) findViewById(R.id.comunidad_nombre_imagen);
 		tituloImagen.setText(nombreImagen);
 
@@ -109,34 +118,75 @@ public class ComunidadImagen extends Activity implements AsyncTaskListener<Bitma
 	{
 		ImageView imagen = (ImageView) findViewById(R.id.imagenComunidadGaleria);
 		imagen.setImageBitmap(result);
-
-		String path = Environment.getExternalStorageDirectory().toString();
-		File f = new File(path, "MINI.jpg");
-		Bitmap b = result;
-		OutputStream fos;
-		try 
-		{
-			fos = new FileOutputStream(f);
-			b.compress(Bitmap.CompressFormat.JPEG, 85, fos);
-			fos.flush();
-			fos.close();
-			MediaStore.Images.Media.insertImage(getContentResolver(), f.getAbsolutePath(), f.getName(), f.getName());
-
-		} 
-		catch (FileNotFoundException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		catch (IOException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		uri = Uri.fromFile(f);
 		bImagen = result;
+
+
+
 	}
+
+	public boolean guardarImagen(Bitmap result)
+	{
+		boolean respuesta;
+		
+
+		
+		
+		String path = Environment.getExternalStorageDirectory().toString() + SEPARADOR + NOMBRE_CARPETA;
+		File directorio = new File(path);
+		if(!directorio.exists())
+			directorio.mkdir();
+		
+		File f = new File(path,darNombreImagen()+ EXTENSION);
+		if(!f.exists())
+		{
+			Bitmap b = result;
+			OutputStream fos;
+			try 
+			{
+				fos = new FileOutputStream(f);
+				b.compress(Bitmap.CompressFormat.JPEG, 85, fos);
+				fos.flush();
+				fos.close();
+				MediaStore.Images.Media.insertImage(getContentResolver(), f.getAbsolutePath(), darNombreImagen()+ EXTENSION, f.getName());
+
+			} 
+			catch (FileNotFoundException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			catch (IOException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+					
+					respuesta = true;
+		}
+		else
+		{
+			AlertDialog.Builder alertBuilder = new AlertDialog.Builder(darContexto());
+			alertBuilder.setMessage("La imagen ya ha sido descargada.");
+			alertBuilder.setCancelable(false);
+			alertBuilder.setNeutralButton("Aceptar", new DialogInterface.OnClickListener() 
+			{
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) 
+				{
+					
+				}
+			});
+			AlertDialog alerta = alertBuilder.create();
+			alerta.show();
+			respuesta = false;
+		}
+		uri = Uri.fromFile(f);
+		return respuesta;
+
+	}
+
 
 	public void abrirFacebook(View v)
 	{
@@ -152,46 +202,98 @@ public class ComunidadImagen extends Activity implements AsyncTaskListener<Bitma
 
 	public void enviarCorreo(View v)
 	{
+		String path = Environment.getExternalStorageDirectory().toString();
+		File f = new File(path + SEPARADOR + NOMBRE_CARPETA + SEPARADOR+ nombreImagen+ EXTENSION);
+		if(!f.exists())
+		{
+			AlertDialog.Builder alertBuilder = new AlertDialog.Builder(darContexto());
+			alertBuilder.setMessage("Debe descargar primero la imagen y volver a intentar de nuevo.");
+			alertBuilder.setCancelable(false);
+			alertBuilder.setNeutralButton("Aceptar", new DialogInterface.OnClickListener() 
+			{
 
-		Uri uri = darUri();
+				@Override
+				public void onClick(DialogInterface dialog, int which) 
+				{
+					
+				}
+			});
+			AlertDialog alerta = alertBuilder.create();
+			alerta.show();
+		}
+		else
+		{
+			Uri uri = darUri();
 
-		Intent emailIntent = new Intent(Intent.ACTION_SEND);
-		emailIntent.setType("image/jpg");
-		emailIntent.putExtra(android.content.Intent.EXTRA_STREAM, uri);
-		startActivity(emailIntent);
+			Intent emailIntent = new Intent(Intent.ACTION_SEND);
+			emailIntent.setType("image/jpg");
+			emailIntent.putExtra(android.content.Intent.EXTRA_STREAM, uri);
+			startActivity(emailIntent);
+		}
+
+
 
 
 	}
 
 	public void compartirImagen(View v)
 	{
-		Uri uri = darUri();
-
-		Intent shareIntent = new Intent(Intent.ACTION_SEND);
-		shareIntent.setType("image/jpg");
-		shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-		startActivity(Intent.createChooser(shareIntent, "Compartir via"));
-
-	}
-	
-		public void descargarImagen(View v)
+		String path = Environment.getExternalStorageDirectory().toString();
+		File f = new File(path + SEPARADOR + NOMBRE_CARPETA + SEPARADOR+ nombreImagen+ EXTENSION);
+		if(!f.exists())
 		{
-			MediaStore.Images.Media.insertImage(getContentResolver(), bImagen, "Mini","");
 			AlertDialog.Builder alertBuilder = new AlertDialog.Builder(darContexto());
-			alertBuilder.setMessage("La imagen ha sido descargada a la galeria del telefono");
+			alertBuilder.setMessage("Debe descargar primero la imagen y volver a intentar de nuevo.");
 			alertBuilder.setCancelable(false);
 			alertBuilder.setNeutralButton("Aceptar", new DialogInterface.OnClickListener() 
 			{
-	
+
 				@Override
 				public void onClick(DialogInterface dialog, int which) 
 				{
-	
+					
 				}
 			});
 			AlertDialog alerta = alertBuilder.create();
 			alerta.show();
 		}
+		
+		else
+		{
+			Uri uri = darUri();
+
+			Intent shareIntent = new Intent(Intent.ACTION_SEND);
+			shareIntent.setType("image/jpg");
+			shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+			startActivity(Intent.createChooser(shareIntent, "Compartir via"));
+		}
+
+
+	}
+
+	public void descargarImagen(View v)
+	{
+		if(guardarImagen(darBitmap()))
+		{
+			AlertDialog.Builder alertBuilder = new AlertDialog.Builder(darContexto());
+			alertBuilder.setMessage("La imagen ha sido descargada a la galeria del telefono");
+			alertBuilder.setCancelable(false);
+			alertBuilder.setNeutralButton("Aceptar", new DialogInterface.OnClickListener() 
+			{
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) 
+				{
+
+				}
+			});
+			AlertDialog alerta = alertBuilder.create();
+			alerta.show();
+		}
+		
+//		MediaStore.Images.Media.insertImage(getContentResolver(), darBitmap(), nombreImagen+ EXTENSION,"");
+		
+	}
 
 
 
@@ -199,15 +301,29 @@ public class ComunidadImagen extends Activity implements AsyncTaskListener<Bitma
 	{
 		return uri;
 	}
-	
+
 	public Bitmap darBitmap()
 	{
 		return bImagen;
 	}
-	
+
 	@Override
 	public void onBackPressed() 
 	{
 		getParent().onBackPressed();
 	}
+
+	@Override
+	protected void onDestroy() 
+	{
+		Log.d("prueba", "paseo");
+		super.onDestroy();
+	}
+
+
+	public String darNombreImagen()
+	{
+		return nombreImagen;
+	}
+
 }

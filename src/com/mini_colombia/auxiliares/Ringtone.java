@@ -39,7 +39,7 @@ import com.mini_colombia.servicios.DescargarAudioOnline;
 
 public class Ringtone extends Activity implements MediaPlayer.OnPreparedListener
 {
-	private static final String NOMBRE_CARPETA = "Mini";
+	private static final String NOMBRE_CARPETA = "MINI";
 
 	private static final String SEPARADOR = "/";
 
