@@ -62,7 +62,18 @@
             android:theme="@style/tabTheme" />
 
         <!-- Declaracion de las actividades de la seccion comunidad -->
-        <activity android:name=".comunidad.ComunidadInicio" />
+        <activity
+            android:name=".comunidad.ComunidadInicio"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+        <activity
+            android:name=".comunidad.ComunidadGaleria"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
+        <activity
+            android:name=".comunidad.ComunidadImagen"
+            android:screenOrientation="portrait"
+            android:theme="@style/noTitle" />
 
         <!-- Declaracion de las actividades de la seccion noticias -->
         <activity

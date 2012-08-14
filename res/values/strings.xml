@@ -49,7 +49,7 @@
     <string name="CONSTANTE_NOTICIAS_CATEGORIAS">http://minicolombia.herokuapp.com/noticias/darNoticiasPorCategoria/</string>
     <string name="CONSTANTE_DESCARGAS_WALLPAPERS">http://minicolombia.herokuapp.com/descargas/darWallpapers/</string>
     <string name="CONSTANTE_DESCARGAS_RINGTONES">http://minicolombia.herokuapp.com/descargas/darRingtones/</string>
-    <string name="CONSTANTE_COMUNIDAD_GALERIA">http://minicolombia.herokuapp.com/comunidad/darImagenes/</string>
+    <string name="CONSTANTE_COMUNIDAD_GALERIA">http://minicolombia.herokuapp.com/comunidad/darUltimasImagenes/</string>
 
     <!-- Constantes individuales para actualizar modelo y edicion -->
     <string name="TAG_CREAR">CREATE</string>

@@ -97,11 +97,11 @@ public class NoticiasNoticia extends Activity
 
 
 
-	//	@Override
-	//	public void onBackPressed() 
-	//	{
-	//		super.onBackPressed();
-	//	}
+		@Override
+		public void onBackPressed() 
+		{
+			getParent().onBackPressed();
+		}
 
 	public DataBaseHelper getHelper()
 	{

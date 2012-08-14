@@ -31,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:background="@drawable/toolbar_subtitle"
-                android:gravity="left|center_vertical" />
+                android:gravity="left|center_vertical"
+                android:paddingLeft="7dip" />
 
             <Button
                 android:id="@+id/button1"

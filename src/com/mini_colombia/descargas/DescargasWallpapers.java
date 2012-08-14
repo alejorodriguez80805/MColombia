@@ -64,9 +64,9 @@ public class DescargasWallpapers extends Activity
 	}
 
 	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		super.onBackPressed();
+	public void onBackPressed() 
+	{
+		getParent().onBackPressed();
 	}
 
 

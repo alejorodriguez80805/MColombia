@@ -64,7 +64,6 @@ public class InicioActivity extends Activity
 		NetworkInfo red  = conMgr.getActiveNetworkInfo();
 		boolean conexionInternet = red!=null && red.getState() == NetworkInfo.State.CONNECTED;
 
-//asfjadhfjladfhjaljk asdfasdfadsf
 
 		try 
 		{
@@ -98,7 +97,7 @@ public class InicioActivity extends Activity
 			else if(conexionInternet)
 			{
 //				new ActualizarFamilia().execute("");
-				new ActualizarNoticias().execute("");
+//				new ActualizarNoticias().execute("");
 			}
 		} 
 		catch (SQLException e) 
@@ -823,12 +822,8 @@ public class InicioActivity extends Activity
 
 	public void inicioInstrucciones(View v)
 	{
-//		Intent i = new Intent(InicioActivity.this, InstruccionesActivity.class);
-//		startActivity(i);
-		
-		Intent i = new Intent(InicioActivity.this, com.mini_colombia.vitrinas.VitrinasInicio.class);
+		Intent i = new Intent(InicioActivity.this, InstruccionesActivity.class);
 		startActivity(i);
-
 	}
 
 	public void inicioTabs(View v)

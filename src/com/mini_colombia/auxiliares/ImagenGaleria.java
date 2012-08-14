@@ -8,9 +8,9 @@ public class ImagenGaleria
 
 	Bitmap thumbnail;
 
-	Bitmap imagen;
+	String imagen;
 
-	public ImagenGaleria(String nombre, Bitmap thumbnail, Bitmap imagen)
+	public ImagenGaleria(String nombre, Bitmap thumbnail, String imagen)
 	{
 		this.nombre = nombre;
 		this.thumbnail = thumbnail;
@@ -33,11 +33,11 @@ public class ImagenGaleria
 		this.thumbnail = thumbnail;
 	}
 
-	public Bitmap getImagen() {
+	public String getImagen() {
 		return imagen;
 	}
 
-	public void setImagen(Bitmap imagen) {
+	public void setImagen(String imagen) {
 		this.imagen = imagen;
 	}
 

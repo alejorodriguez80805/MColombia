@@ -142,7 +142,7 @@ public class FamiliaEdicion extends Activity implements OnClickListener
 	@Override
 	public void onBackPressed() 
 	{
-		super.onBackPressed();
+		getParent().onBackPressed();
 	}
 	
 	@Override

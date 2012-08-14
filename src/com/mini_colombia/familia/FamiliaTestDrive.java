@@ -73,7 +73,7 @@ public class FamiliaTestDrive extends Activity
 	@Override
 	public void onBackPressed() 
 	{
-		super.onBackPressed();
+		getParent().onBackPressed();
 	}
 
 }

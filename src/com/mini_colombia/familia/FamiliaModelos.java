@@ -38,7 +38,7 @@ import com.mini_colombia.values.Modelo;
 public class FamiliaModelos extends Activity implements OnClickListener
 {
 	private static final String MODELO = "modelo";
-	
+
 	private static final String EDICION = "edicion";
 
 	private DataBaseHelper databaseHelper;
@@ -48,7 +48,7 @@ public class FamiliaModelos extends Activity implements OnClickListener
 	private Dao<Modelo, String> daoModelo;
 
 	private Dao<Edicion, String> daoEdicion;
-	
+
 	private String nombreModelo;
 
 
@@ -80,7 +80,7 @@ public class FamiliaModelos extends Activity implements OnClickListener
 			HorizontalScrollView horScroll = (HorizontalScrollView)findViewById(R.id.horizontalScrollModelos);
 			horScroll.setHorizontalFadingEdgeEnabled(false);
 			horScroll.setHorizontalScrollBarEnabled(false);
-			
+
 			//Seccion Carga Imagen
 			String nombreImagen = m.getImagen();
 			Bitmap bitmap = ObtenerImagen.darImagen(nombreImagen, getApplicationContext());
@@ -99,7 +99,7 @@ public class FamiliaModelos extends Activity implements OnClickListener
 			List<Edicion> ediciones = daoEdicion.query(query);
 
 			LinearLayout layout = (LinearLayout) findViewById(R.id.layoutDerModelos);
-			
+
 			ImageButton ib;
 			for(int i = 0; i<ediciones.size(); i++)
 			{
@@ -107,14 +107,14 @@ public class FamiliaModelos extends Activity implements OnClickListener
 				Edicion e = ediciones.get(i);
 				String nombreImagenThumbnail = e.getThumbnail();
 
-				
+
 				bitmap = ObtenerImagen.darImagen(nombreImagenThumbnail, getApplicationContext());
 				Bitmap bitmapEscala= Resize.resizeBitmap(bitmap, 147, 220);
 				ib.setImageBitmap(bitmapEscala);
 				ib.setBackgroundColor(Color.BLACK);
 				ib.setOnClickListener(this);
 				ib.setId(i);
-				
+
 				layout.addView(ib);
 			}
 
@@ -191,8 +191,8 @@ public class FamiliaModelos extends Activity implements OnClickListener
 	///////////////////////////////
 	//Metodos de la actividad
 	///////////////////////////////
-	
-	
+
+
 	@Override
 	public void onClick(View v) 
 	{
@@ -204,16 +204,15 @@ public class FamiliaModelos extends Activity implements OnClickListener
 		View v1 = FamiliaInicio.grupoFamilia.getLocalActivityManager().startActivity("", i).getDecorView();
 		FamiliaInicio actividadPadre =(FamiliaInicio) getParent(); 
 		actividadPadre.reemplazarView(v1);
-		
+
 	}
-	
+
 	@Override
 	public void onBackPressed() 
 	{
-		// TODO Auto-generated method stub
-		super.onBackPressed();
+		getParent().onBackPressed();
 	}
-	
+
 	@Override
 	protected void onDestroy() 
 	{
@@ -224,6 +223,6 @@ public class FamiliaModelos extends Activity implements OnClickListener
 			OpenHelperManager.releaseHelper();
 		databaseHelper = null;
 	}
-	
+
 
 }
